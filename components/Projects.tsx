@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import Section from './Section';
-import { FEATURED_PROJECTS } from '../constants';
 import { useGithubContext } from '../App';
 import { GithubRepo } from '../types';
 import ProjectCard from './ProjectCard';
@@ -17,7 +16,7 @@ const Projects: React.FC<ProjectsProps> = ({ initialFilter, onFilterApplied }) =
   const { repos, isLoadingRepos, isReposStale, getRepoReadme } = useGithubContext();
   
   const [allRepos, setAllRepos] = useState<GithubRepo[]>([]);
-  const [featuredRepos, setFeaturedRepos] = useState<GithubRepo[]>([]);
+  const [recentRepos, setRecentRepos] = useState<GithubRepo[]>([]);
   const [filteredRepos, setFilteredRepos] = useState<GithubRepo[]>([]);
   const [isSearchActive, setIsSearchActive] = useState(false);
   
@@ -42,12 +41,19 @@ const Projects: React.FC<ProjectsProps> = ({ initialFilter, onFilterApplied }) =
   // Processar repos quando carregados do contexto
   useEffect(() => {
     if (repos) {
-      const featured = repos.filter(repo => FEATURED_PROJECTS.includes(repo.name));
-      const others = repos.filter(repo => !FEATURED_PROJECTS.includes(repo.name));
+      // Ordenar todos os repos por data de criação/atualização (mais recentes primeiro)
+      const sortedByDate = [...repos].sort((a, b) => {
+        const dateA = new Date(a.created_at).getTime();
+        const dateB = new Date(b.created_at).getTime();
+        return dateB - dateA; // Mais recente primeiro
+      });
+
+      // Pegar os 3 projetos mais recentes para destaque
+      const recent = sortedByDate.slice(0, 3);
       
-      setFeaturedRepos(featured);
-      setAllRepos(others);
-      setFilteredRepos(others); // Inicialmente mostra todos os repos não destacados
+      setRecentRepos(recent);
+      setAllRepos(sortedByDate); // Todos os projetos (incluindo os recentes)
+      setFilteredRepos(sortedByDate); // Inicialmente mostra todos os repos
     }
   }, [repos]);
 
@@ -157,8 +163,9 @@ const Projects: React.FC<ProjectsProps> = ({ initialFilter, onFilterApplied }) =
       {isLoadingRepos ? (
         <>
             <div className="mb-16">
-                <h3 className="text-2xl font-bold text-center mb-8">Projetos em Destaque</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <h3 className="text-2xl font-bold text-center mb-8">Projetos Recentes</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                    <SkeletonCard />
                     <SkeletonCard />
                     <SkeletonCard />
                 </div>
@@ -169,11 +176,11 @@ const Projects: React.FC<ProjectsProps> = ({ initialFilter, onFilterApplied }) =
         </>
       ) : (
         <>
-          {featuredRepos.length > 0 && (
+          {recentRepos.length > 0 && (
             <div className="mb-16">
-              <h3 className="text-2xl font-bold text-center mb-8">Projetos em Destaque</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                {featuredRepos.map((repo, index) => (
+              <h3 className="text-2xl font-bold text-center mb-8">Projetos Recentes</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                {recentRepos.map((repo, index) => (
                   <ProjectCard key={repo.id} repo={repo} onCardClick={handleCardClick} index={index} />
                 ))}
               </div>
@@ -182,14 +189,14 @@ const Projects: React.FC<ProjectsProps> = ({ initialFilter, onFilterApplied }) =
 
           <div>
              {allRepos.length > 0 && (
-                <h3 className="text-2xl font-bold text-center mb-8">Outros Projetos</h3>
+                <h3 className="text-2xl font-bold text-center mb-8">Todos os Projetos</h3>
              )}
             
             {/* Sistema de busca avançada */}
             {allRepos.length > 0 && (
               <ProjectSearch 
                 repos={allRepos}
-                repoKeywords={repoKeywords.filter(kw => !FEATURED_PROJECTS.includes(kw.repoName))}
+                repoKeywords={repoKeywords} // Todos os projetos incluindo os recentes
                 onFilteredResults={handleFilteredResults}
                 onSearchStateChange={handleSearchStateChange}
               />
