@@ -4,7 +4,6 @@ import Home from './components/Home';
 import Projects from './components/Projects';
 import About from './components/About';
 import Certifications from './components/Certifications';
-import Contact from './components/Contact';
 import Footer from './components/Footer';
 import { NavSection, GithubDataState, GithubContextType } from './types';
 import { PERSONAL_INFO, GITHUB_USERNAME } from './constants';
@@ -23,7 +22,7 @@ export const useGithubContext = () => {
 };
 
 const App: React.FC = () => {
-  const validSections: NavSection[] = ['home', 'projects', 'about', 'certifications', 'contact'];
+  const validSections: NavSection[] = ['home', 'projects', 'about', 'certifications'];
   
   const getSectionFromHash = (): NavSection => {
     const hash = window.location.hash.replace('#', '');
@@ -206,8 +205,7 @@ const App: React.FC = () => {
         home: 'Início',
         projects: 'Projetos',
         about: 'Sobre',
-        certifications: 'Formação',
-        contact: 'Contato'
+        certifications: 'Formação'
     };
     
     document.title = sectionTitles[activeSection] 
@@ -228,8 +226,6 @@ const App: React.FC = () => {
             return <About onSkillSelect={handleSkillSelect} />;
         case 'certifications':
             return <Certifications />;
-        case 'contact':
-            return <Contact />;
         case 'home':
         default:
             return <Home />;

@@ -75,7 +75,7 @@ export interface SocialLink {
   icon: React.ComponentType<{ className?: string }>;
 }
 
-export type NavSection = 'home' | 'projects' | 'about' | 'certifications' | 'contact';
+export type NavSection = 'home' | 'projects' | 'about' | 'certifications';
 
 export interface CachedResponse<T> {
   data: T | null;

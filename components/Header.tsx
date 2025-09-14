@@ -34,7 +34,6 @@ const Header: React.FC<HeaderProps> = ({ activeSection, isDarkMode, setIsDarkMod
     { section: 'projects', label: 'Projetos' },
     { section: 'about', label: 'Sobre' },
     { section: 'certifications', label: 'Formação' },
-    { section: 'contact', label: 'Contato' },
   ];
 
   return (

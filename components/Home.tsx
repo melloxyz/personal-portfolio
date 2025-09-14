@@ -110,11 +110,11 @@ const Home: React.FC = () => {
           
           {/* Botão secundário */}
           <button
-            onClick={() => window.location.hash = 'contact'}
+            onClick={() => window.location.hash = 'about'}
             className="group px-8 py-4 border-2 border-light-accent dark:border-dark-accent text-light-accent dark:text-dark-accent hover:bg-light-accent dark:hover:bg-dark-accent hover:text-white font-semibold rounded-2xl transition-all duration-300 flex items-center gap-3"
           >
             <MessageCircle className="w-5 h-5" />
-            Entrar em Contato
+            Saber Mais
           </button>
         </div>
         
