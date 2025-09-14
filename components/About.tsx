@@ -1,16 +1,12 @@
 import React from 'react';
 import Section from './Section';
-import GithubStats from './GithubStats';
 import { PERSONAL_INFO, SKILLS } from '../constants';
-import { useGithubContext } from '../App';
 
 interface AboutProps {
   onSkillSelect: (skill: string) => void;
 }
 
 const About: React.FC<AboutProps> = ({ onSkillSelect }) => {
-  const { repos, isLoadingRepos, isReposStale } = useGithubContext();
-
   return (
     <Section id="about">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-12 items-start">
@@ -34,9 +30,6 @@ const About: React.FC<AboutProps> = ({ onSkillSelect }) => {
             ))}
           </div>
         </div>
-      </div>
-      <div className="mt-20 border-t border-light-border dark:border-dark-border pt-16">
-        <GithubStats repos={repos} isLoading={isLoadingRepos} isDataStale={isReposStale} />
       </div>
     </Section>
   );
