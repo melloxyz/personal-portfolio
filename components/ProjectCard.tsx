@@ -24,7 +24,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ repo, onCardClick, index }) =
     <>
       <button
         onClick={() => onCardClick(repo)}
-        className="block w-full text-left bg-light-card dark:bg-dark-card rounded-2xl p-6 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group animate-card-enter"
+        className="block w-full text-left bg-light-card dark:bg-dark-card rounded-2xl p-6 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group animate-card-enter h-60"
         style={{ animationDelay: `${index * 80}ms` }}
       >
         <div className="flex flex-col h-full">

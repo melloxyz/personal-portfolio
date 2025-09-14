@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Section from './Section';
 import { GITHUB_USERNAME, PERSONAL_INFO } from '../constants';
 import { useGithubContext } from '../App';
@@ -6,6 +6,31 @@ import { SocialLink } from '../types';
 
 const Home: React.FC = () => {
   const { user, isLoadingUser, isUserStale } = useGithubContext();
+  const [typedText, setTypedText] = useState('');
+  const [isTyping, setIsTyping] = useState(true);
+  
+  const fullTitle = PERSONAL_INFO.title;
+  
+  // Efeito de digitação
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+    let currentIndex = 0;
+    
+    const typeNextChar = () => {
+      if (currentIndex <= fullTitle.length) {
+        setTypedText(fullTitle.slice(0, currentIndex));
+        currentIndex++;
+        timeoutId = setTimeout(typeNextChar, 100); // 100ms entre cada caractere
+      } else {
+        setIsTyping(false);
+      }
+    };
+    
+    // Iniciar digitação após um pequeno delay
+    timeoutId = setTimeout(typeNextChar, 1000);
+    
+    return () => clearTimeout(timeoutId);
+  }, [fullTitle]);
   
   const socialLinks: SocialLink[] = [
     { name: 'GitHub', url: `https://github.com/${GITHUB_USERNAME}`, icon: Github },
@@ -16,39 +41,155 @@ const Home: React.FC = () => {
 
   return (
     <Section id="home">
-      <div className="text-center flex flex-col items-center">
+      {/* Background com gradiente animado */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-purple-400/20 via-pink-400/20 to-red-400/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-blue-400/20 via-cyan-400/20 to-teal-400/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-gradient-to-r from-indigo-400/10 via-purple-400/10 to-pink-400/10 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '4s' }}></div>
+      </div>
+
+      <div className="relative text-center flex flex-col items-center">
         {isUserStale && (
             <div className="mb-4 w-full max-w-2xl p-3 text-sm text-yellow-800 bg-yellow-100 border border-yellow-300 rounded-lg dark:bg-yellow-900/20 dark:text-yellow-300 dark:border-yellow-500/30" role="alert">
               Atenção: Não foi possível buscar os dados mais recentes. As informações exibidas podem estar desatualizadas.
             </div>
         )}
-        {isLoadingUser ? (
-          <div className="w-40 h-40 bg-light-border dark:bg-dark-border rounded-full animate-pulse"></div>
-        ) : (
-          user && <img src={user.avatar_url} alt={user.name} className="w-40 h-40 rounded-full shadow-2xl mb-6 border-4 border-light-card dark:border-dark-card" />
-        )}
-        <h1 className="text-4xl md:text-5xl font-extrabold text-light-text dark:text-dark-text tracking-tight mb-2">
+        
+        {/* Avatar com animação de pulse e border gradiente */}
+        <div className="relative mb-8">
+          {isLoadingUser ? (
+            <div className="w-40 h-40 bg-light-border dark:bg-dark-border rounded-full animate-pulse"></div>
+          ) : (
+            user && (
+              <div className="relative">
+                {/* Border gradiente animado */}
+                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 animate-spin" style={{ padding: '4px', animation: 'spin 8s linear infinite' }}>
+                  <div className="w-full h-full rounded-full bg-light-bg dark:bg-dark-bg"></div>
+                </div>
+                {/* Avatar com animação de respiração */}
+                <img 
+                  src={user.avatar_url} 
+                  alt={user.name} 
+                  className="relative w-40 h-40 rounded-full shadow-2xl border-4 border-transparent animate-pulse-gentle" 
+                  style={{
+                    animation: 'pulse-gentle 3s ease-in-out infinite'
+                  }}
+                />
+              </div>
+            )
+          )}
+        </div>
+        
+        {/* Nome com efeito de entrada */}
+        <h1 className="text-4xl md:text-5xl font-extrabold text-light-text dark:text-dark-text tracking-tight mb-2 animate-fade-in-up">
           {user?.name || PERSONAL_INFO.name}
         </h1>
-        <h2 className="text-xl md:text-2xl font-medium text-light-accent dark:text-dark-accent mb-4">{PERSONAL_INFO.title}</h2>
-        <p className="max-w-2xl text-lg text-light-subtext dark:text-dark-subtext mb-8">
+        
+        {/* Título com efeito de digitação */}
+        <h2 className="text-xl md:text-2xl font-medium text-light-accent dark:text-dark-accent mb-6 h-8 flex items-center justify-center">
+          <span>{typedText}</span>
+          {isTyping && <span className="ml-1 animate-blink">|</span>}
+        </h2>
+        
+        {/* Bio com efeito de fade */}
+        <p className="max-w-2xl text-lg text-light-subtext dark:text-dark-subtext mb-8 animate-fade-in" style={{ animationDelay: '0.5s' }}>
           {user?.bio || PERSONAL_INFO.bio}
         </p>
+        
+        {/* CTAs melhorados */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
+          {/* Botão principal */}
+          <button
+            onClick={() => window.location.hash = 'projects'}
+            className="group relative px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 flex items-center gap-3"
+          >
+            <Briefcase className="w-5 h-5" />
+            Ver Projetos
+            <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+          </button>
+          
+          {/* Botão secundário */}
+          <button
+            onClick={() => window.location.hash = 'contact'}
+            className="group px-8 py-4 border-2 border-light-accent dark:border-dark-accent text-light-accent dark:text-dark-accent hover:bg-light-accent dark:hover:bg-dark-accent hover:text-white font-semibold rounded-2xl transition-all duration-300 flex items-center gap-3"
+          >
+            <MessageCircle className="w-5 h-5" />
+            Entrar em Contato
+          </button>
+        </div>
+        
+        {/* Links sociais melhorados */}
         <div className="flex items-center justify-center space-x-4">
-          {socialLinks.map(link => (
+          {socialLinks.map((link, index) => (
             <a 
               key={link.name} 
               href={link.url}
               target="_blank" 
               rel="noopener noreferrer" 
-              className="p-3 bg-light-card dark:bg-dark-card rounded-full shadow-md hover:shadow-lg hover:scale-105 hover:-translate-y-1 transition-all duration-300 text-light-subtext dark:text-dark-subtext"
+              className="group relative p-4 bg-light-card dark:bg-dark-card rounded-2xl shadow-md hover:shadow-xl hover:scale-110 hover:-translate-y-2 transition-all duration-300 text-light-subtext dark:text-dark-subtext hover:text-light-accent dark:hover:text-dark-accent animate-fade-in-up"
               aria-label={link.name}
+              style={{ animationDelay: `${0.8 + index * 0.1}s` }}
             >
               <link.icon className="w-6 h-6" />
+              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 text-xs font-medium text-white bg-gray-900 dark:bg-gray-700 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+                {link.name}
+              </div>
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </a>
           ))}
         </div>
       </div>
+
+      {/* Estilos CSS inline para animações personalizadas */}
+      <style jsx>{`
+        @keyframes pulse-gentle {
+          0%, 100% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.05);
+          }
+        }
+        
+        @keyframes blink {
+          0%, 50% { opacity: 1; }
+          51%, 100% { opacity: 0; }
+        }
+        
+        @keyframes fade-in-up {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        @keyframes fade-in {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        
+        .animate-pulse-gentle {
+          animation: pulse-gentle 3s ease-in-out infinite;
+        }
+        
+        .animate-blink {
+          animation: blink 1s infinite;
+        }
+        
+        .animate-fade-in-up {
+          animation: fade-in-up 0.8s ease-out forwards;
+          opacity: 0;
+        }
+        
+        .animate-fade-in {
+          animation: fade-in 0.8s ease-out forwards;
+          opacity: 0;
+        }
+      `}</style>
     </Section>
   );
 };
@@ -60,6 +201,7 @@ const Github: React.FC<{ className?: string }> = ({ className }) => (
         <path d="M9 18c-4.51 2-5-2-7-2"></path>
     </svg>
 );
+
 const Linkedin: React.FC<{ className?: string }> = ({ className }) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
         <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
@@ -67,18 +209,33 @@ const Linkedin: React.FC<{ className?: string }> = ({ className }) => (
         <circle cx="4" cy="4" r="2"></circle>
     </svg>
 );
+
 const Mail: React.FC<{ className?: string }> = ({ className }) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
         <rect width="20" height="16" x="2" y="4" rx="2"></rect>
         <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
     </svg>
 );
+
 const Rocket: React.FC<{ className?: string }> = ({ className }) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
         <path d="M9 18V9.5A2.5 2.5 0 0 1 11.5 7h1A2.5 2.5 0 0 1 15 9.5V18" />
         <path d="M12 7L10 2h4l-2 5z" />
         <path d="M9 18l-4 4h4" />
         <path d="M15 18l4 4h-4" />
+    </svg>
+);
+
+const Briefcase: React.FC<{ className?: string }> = ({ className }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+        <path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+        <rect width="20" height="14" x="2" y="6" rx="2"></rect>
+    </svg>
+);
+
+const MessageCircle: React.FC<{ className?: string }> = ({ className }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+        <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path>
     </svg>
 );
 
