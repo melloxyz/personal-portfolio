@@ -9,6 +9,7 @@ import Footer from './components/Footer';
 import { NavSection, GithubDataState, GithubContextType } from './types';
 import { PERSONAL_INFO, GITHUB_USERNAME } from './constants';
 import { getUser, getRepos, getRepoReadme, getRepoCommitCount } from './services/githubService';
+import { ReadmeAnalyzer } from './services/readmeAnalyzer';
 
 // Criar contexto do GitHub
 const GithubContext = createContext<GithubContextType | null>(null);
@@ -91,9 +92,53 @@ const App: React.FC = () => {
         });
         const reposWithCommits = await Promise.all(reposWithCommitsPromises);
         
+        // Analisar READMEs em paralelo para extrair palavras-chave
+        const reposWithKeywordsPromises = reposWithCommits.map(async (repo) => {
+          // Verificar se já temos keywords em cache
+          const cachedKeywords = ReadmeAnalyzer.getCachedKeywords(repo.name);
+          if (cachedKeywords) {
+            return {
+              ...repo,
+              readme_keywords: cachedKeywords.keywords,
+              readme_categories: cachedKeywords.categories
+            };
+          }
+
+          // Buscar README e analisar
+          const owner = repo.full_name.split('/')[0];
+          const { data: readmeData } = await getRepoReadme(owner, repo.name);
+          
+          if (readmeData?.content) {
+            try {
+              const binaryString = atob(readmeData.content);
+              const len = binaryString.length;
+              const bytes = new Uint8Array(len);
+              for (let i = 0; i < len; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+              }
+              const decodedContent = new TextDecoder('utf-8').decode(bytes);
+              
+              // Analisar e extrair palavras-chave
+              const analysis = await ReadmeAnalyzer.analyzeRepo(repo.name, decodedContent);
+              return {
+                ...repo,
+                readme_keywords: analysis.keywords,
+                readme_categories: analysis.categories
+              };
+            } catch (e) {
+              console.error(`Failed to analyze README for ${repo.name}:`, e);
+              return repo;
+            }
+          }
+          
+          return repo;
+        });
+
+        const reposWithKeywords = await Promise.all(reposWithKeywordsPromises);
+        
         setGithubState(prev => ({ 
           ...prev, 
-          repos: reposWithCommits, 
+          repos: reposWithKeywords, 
           isReposStale: isStale, 
           isLoadingRepos: false 
         }));

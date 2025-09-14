@@ -1,15 +1,12 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import Section from './Section';
 import { FEATURED_PROJECTS } from '../constants';
 import { useGithubContext } from '../App';
 import { GithubRepo } from '../types';
 import ProjectCard from './ProjectCard';
 import ProjectModal from './ProjectModal';
-
-// Ícone para o botão limpar
-const X: React.FC<{ className?: string }> = ({ className }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-);
+import ProjectSearch from './ProjectSearch';
+import { ReadmeAnalyzer, RepoKeywords } from '../services/readmeAnalyzer';
 
 interface ProjectsProps {
   initialFilter: string | null;
@@ -22,13 +19,25 @@ const Projects: React.FC<ProjectsProps> = ({ initialFilter, onFilterApplied }) =
   const [allRepos, setAllRepos] = useState<GithubRepo[]>([]);
   const [featuredRepos, setFeaturedRepos] = useState<GithubRepo[]>([]);
   const [filteredRepos, setFilteredRepos] = useState<GithubRepo[]>([]);
-  const [languages, setLanguages] = useState<string[]>([]);
-  const [selectedLangs, setSelectedLangs] = useState<string[]>([]);
+  const [isSearchActive, setIsSearchActive] = useState(false);
   
   const [selectedRepo, setSelectedRepo] = useState<GithubRepo | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [readmeContent, setReadmeContent] = useState<string | null>(null);
   const [isLoadingReadme, setIsLoadingReadme] = useState(false);
+
+  // Gerar dados de palavras-chave para o sistema de busca inteligente
+  const repoKeywords = useMemo((): RepoKeywords[] => {
+    if (!repos) return [];
+
+    return repos.map(repo => ({
+      repoName: repo.name,
+      keywords: repo.readme_keywords || [],
+      categories: repo.readme_categories || {},
+      lastAnalyzed: Date.now(),
+      priority: repo.readme_keywords?.length > 0 ? 1 : 3 // Prioridade baseada na análise do README
+    }));
+  }, [repos]);
 
   // Processar repos quando carregados do contexto
   useEffect(() => {
@@ -38,67 +47,45 @@ const Projects: React.FC<ProjectsProps> = ({ initialFilter, onFilterApplied }) =
       
       setFeaturedRepos(featured);
       setAllRepos(others);
-
-      const langSet = new Set<string>();
-      others.forEach(repo => { // Usar apenas linguagens de repos não destacados para filtros
-        if (repo.language) langSet.add(repo.language);
-      });
-      setLanguages([...Array.from(langSet)]);
+      setFilteredRepos(others); // Inicialmente mostra todos os repos não destacados
     }
   }, [repos]);
 
+  // Lidar com filtro inicial das skills do About
   useEffect(() => {
-      if (initialFilter && languages.length > 0) { 
-          const knownLang = languages.find(l => l.toLowerCase() === initialFilter.toLowerCase());
-          if (knownLang) {
-              setSelectedLangs([knownLang]);
-          } else {
-              setSelectedLangs([initialFilter]);
-          }
-          onFilterApplied();
-      }
-  }, [initialFilter, onFilterApplied, languages]);
+    if (initialFilter && allRepos.length > 0) {
+      // Aplicar filtro inicial baseado na skill selecionada no About
+      const initialFiltered = allRepos.filter(repo => {
+        const term = initialFilter.toLowerCase();
+        
+        // Verificar linguagem, topics, description e keywords do README
+        const searchFields = [
+          repo.language || '',
+          repo.description || '',
+          ...repo.topics,
+          ...(repo.readme_keywords || [])
+        ];
 
-  useEffect(() => {
-    if (selectedLangs.length === 0) {
-      setFilteredRepos(allRepos);
-    } else {
-      setFilteredRepos(
-        allRepos.filter(repo => {
-          return selectedLangs.some(selectedLang => {
-            const term = selectedLang.toLowerCase();
-            
-            // Verificar linguagem do repositório
-            if (repo.language && repo.language.toLowerCase() === term) return true;
-            
-            // Criar uma lista pesquisável de strings dos dados do repositório
-            const searchCorpus = [
-              ...repo.topics.map(t => t.toLowerCase()),
-              repo.name.toLowerCase()
-            ];
-
-            // Normalizar termo para melhor correspondência (ex: 'Node.js' -> 'nodejs')
-            const normalizedTerm = term.replace(/\.| & /g, '');
-            
-            // Verificar se algum tópico ou nome do repositório inclui o termo normalizado
-            return searchCorpus.some(item => item.includes(normalizedTerm));
-          });
-        })
-      );
+        return searchFields.some(field => 
+          field.toLowerCase().includes(term) || 
+          field.toLowerCase().replace(/\.| & /g, '').includes(term.replace(/\.| & /g, ''))
+        );
+      });
+      
+      setFilteredRepos(initialFiltered);
+      onFilterApplied();
     }
-  }, [selectedLangs, allRepos]);
+  }, [initialFilter, onFilterApplied, allRepos]);
 
-  const handleLangToggle = (lang: string) => {
-    setSelectedLangs(prev =>
-      prev.includes(lang)
-        ? prev.filter(l => l !== lang)
-        : [...prev, lang]
-    );
-  };
+  // Callback para receber resultados filtrados do ProjectSearch
+  const handleFilteredResults = useCallback((filtered: GithubRepo[]) => {
+    setFilteredRepos(filtered);
+  }, []);
 
-  const handleClearFilters = () => {
-    setSelectedLangs([]);
-  };
+  // Callback para detectar mudanças no estado da busca
+  const handleSearchStateChange = useCallback((isActive: boolean) => {
+    setIsSearchActive(isActive);
+  }, []);
 
   const handleCardClick = async (repo: GithubRepo) => {
     setSelectedRepo(repo);
@@ -197,37 +184,39 @@ const Projects: React.FC<ProjectsProps> = ({ initialFilter, onFilterApplied }) =
              {allRepos.length > 0 && (
                 <h3 className="text-2xl font-bold text-center mb-8">Outros Projetos</h3>
              )}
-            <div className="flex justify-center flex-wrap items-center gap-2 mb-10">
-              {languages.map(lang => (
-                <button
-                  key={lang}
-                  onClick={() => handleLangToggle(lang)}
-                  className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 active:scale-95 ${
-                    selectedLangs.includes(lang)
-                      ? 'bg-light-accent text-white dark:bg-dark-accent ring-2 ring-offset-2 ring-light-accent/50 dark:ring-dark-accent/50 ring-offset-light-bg dark:ring-offset-dark-bg'
-                      : 'bg-light-card dark:bg-dark-card hover:bg-light-border dark:hover:bg-dark-border'
-                  }`}
-                >
-                  {lang}
-                </button>
-              ))}
-              {selectedLangs.length > 0 && (
-                  <button
-                      onClick={handleClearFilters}
-                      className="px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 text-light-accent dark:text-dark-accent hover:bg-light-accent/10 dark:hover:bg-dark-accent/20 flex items-center gap-1.5 active:scale-95"
-                      aria-label="Limpar filtros"
-                  >
-                      <X className="w-4 h-4" />
-                      Limpar
-                  </button>
-              )}
-            </div>
+            
+            {/* Sistema de busca avançada */}
+            {allRepos.length > 0 && (
+              <ProjectSearch 
+                repos={allRepos}
+                repoKeywords={repoKeywords.filter(kw => !FEATURED_PROJECTS.includes(kw.repoName))}
+                onFilteredResults={handleFilteredResults}
+                onSearchStateChange={handleSearchStateChange}
+              />
+            )}
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredRepos.map((repo, index) => (
                 <ProjectCard key={repo.id} repo={repo} onCardClick={handleCardClick} index={index} />
               ))}
             </div>
+
+            {/* Mensagem quando não há resultados */}
+            {isSearchActive && filteredRepos.length === 0 && (
+              <div className="text-center py-12">
+                <div className="mb-4">
+                  <svg className="mx-auto h-24 w-24 text-light-subtext dark:text-dark-subtext" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-medium text-light-text dark:text-dark-text mb-2">
+                  Nenhum projeto encontrado
+                </h3>
+                <p className="text-light-subtext dark:text-dark-subtext mb-4">
+                  Tente ajustar sua busca ou filtros para encontrar mais projetos.
+                </p>
+              </div>
+            )}
           </div>
         </>
       )}

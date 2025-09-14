@@ -44,6 +44,8 @@ export interface GithubRepo {
   topics: string[];
   license: License | null;
   commit_count?: number;
+  readme_keywords?: string[];
+  readme_categories?: { [category: string]: string[] };
 }
 
 export interface GithubReadme {
