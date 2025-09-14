@@ -35,15 +35,7 @@ const FormationCard: React.FC<{ formation: AcademicFormation; index: number }> =
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
       }`}
     >
-      {/* Timeline connector */}
-      <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500 via-purple-500 to-cyan-500 opacity-30"></div>
-      
-      {/* Timeline dot */}
-      <div className="absolute left-6 top-8 w-4 h-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full shadow-lg z-10 group-hover:scale-125 transition-transform duration-300">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full animate-pulse opacity-50"></div>
-      </div>
-
-      <div className="ml-16 bg-gradient-to-br from-light-card to-light-bg dark:from-dark-card dark:to-dark-bg rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-light-border/30 dark:border-dark-border/30 backdrop-blur-sm relative overflow-hidden group">
+      <div className="bg-gradient-to-br from-light-card to-light-bg dark:from-dark-card dark:to-dark-bg rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-light-border/30 dark:border-dark-border/30 backdrop-blur-sm relative overflow-hidden group">
         {/* Gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
         
@@ -70,17 +62,17 @@ const FormationCard: React.FC<{ formation: AcademicFormation; index: number }> =
             </div>
 
             {/* Info */}
-            <div className="flex-grow">
-              <div className="flex items-center gap-2 mb-2">
-                <Graduate className="w-5 h-5 text-blue-500" />
-                <h3 className="font-bold text-2xl text-light-text dark:text-dark-text">{formation.institution}</h3>
+            <div className="flex-grow min-w-0">
+              <div className="flex items-start gap-2 mb-2">
+                <Graduate className="w-5 h-5 text-blue-500 flex-shrink-0 mt-1" />
+                <h3 className="font-bold text-xl lg:text-2xl text-light-text dark:text-dark-text break-words">{formation.institution}</h3>
               </div>
-              <p className="text-xl text-light-subtext dark:text-dark-subtext font-medium mb-2">{formation.course}</p>
+              <p className="text-lg lg:text-xl text-light-subtext dark:text-dark-subtext font-medium mb-2 break-words">{formation.course}</p>
               <div className="flex items-center gap-2 text-sm text-light-subtext/80 dark:text-dark-subtext/80">
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
                 </svg>
-                {formation.period}
+                <span className="break-words">{formation.period}</span>
               </div>
             </div>
           </div>
@@ -95,11 +87,11 @@ const FormationCard: React.FC<{ formation: AcademicFormation; index: number }> =
                 </div>
                 <h4 className="font-bold text-lg text-light-text dark:text-dark-text">Principais Disciplinas</h4>
               </div>
-              <div className="space-y-2">
+              <div className="max-h-40 overflow-y-auto scrollbar-thin space-y-2">
                 {formation.mainSubjects.map((subject, idx) => (
-                  <div key={idx} className="flex items-center gap-2 text-sm text-light-subtext dark:text-dark-subtext">
-                    <div className="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>
-                    {subject}
+                  <div key={idx} className="flex items-start gap-2 text-sm text-light-subtext dark:text-dark-subtext">
+                    <div className="w-1.5 h-1.5 bg-blue-500 rounded-full flex-shrink-0 mt-2"></div>
+                    <span className="break-words">{subject}</span>
                   </div>
                 ))}
               </div>
@@ -113,9 +105,9 @@ const FormationCard: React.FC<{ formation: AcademicFormation; index: number }> =
                 </div>
                 <h4 className="font-bold text-lg text-light-text dark:text-dark-text">Linguagens & Ferramentas</h4>
               </div>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto scrollbar-thin">
                 {formation.toolsAndLanguages.map((tool, idx) => (
-                  <span key={idx} className="px-3 py-1 bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/20 dark:to-pink-900/20 text-purple-700 dark:text-purple-300 text-xs font-medium rounded-full border border-purple-200 dark:border-purple-700/30">
+                  <span key={idx} className="px-3 py-1 bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/20 dark:to-pink-900/20 text-purple-700 dark:text-purple-300 text-xs font-medium rounded-full border border-purple-200 dark:border-purple-700/30 flex-shrink-0">
                     {tool}
                   </span>
                 ))}
@@ -220,9 +212,13 @@ const Certifications: React.FC = () => {
           </div>
           
           <div className="max-w-5xl mx-auto">
-            <div className="relative">
+            <div className="relative space-y-8">
               {ACADEMIC_FORMATION.map((formation, index) => (
-                <FormationCard key={index} formation={formation} index={index} />
+                <FormationCard 
+                  key={index} 
+                  formation={formation} 
+                  index={index}
+                />
               ))}
             </div>
           </div>

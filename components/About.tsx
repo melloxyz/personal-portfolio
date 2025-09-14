@@ -216,12 +216,12 @@ const About: React.FC<AboutProps> = ({ onSkillSelect }) => {
                   </svg>
                   Principais Habilidades
                 </h3>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2 max-h-40 overflow-y-auto scrollbar-thin">
                   {SKILLS.map((skill, index) => (
                     <button
                       key={skill}
                       onClick={() => handleSkillClick(skill)}
-                      className={`skill-tag group relative px-4 py-2 bg-gradient-to-r from-light-accent/10 to-light-accent/5 dark:from-dark-accent/20 dark:to-dark-accent/10 text-light-accent dark:text-dark-accent text-sm font-medium rounded-full cursor-pointer hover:from-light-accent/20 hover:to-light-accent/10 dark:hover:from-dark-accent/30 dark:hover:to-dark-accent/20 transition-all duration-300 border border-light-accent/20 dark:border-dark-accent/30 hover:border-light-accent/40 dark:hover:border-dark-accent/50 hover:shadow-lg hover:-translate-y-0.5 ${
+                      className={`skill-tag group relative px-4 py-2 bg-gradient-to-r from-light-accent/10 to-light-accent/5 dark:from-dark-accent/20 dark:to-dark-accent/10 text-light-accent dark:text-dark-accent text-sm font-medium rounded-full cursor-pointer hover:from-light-accent/20 hover:to-light-accent/10 dark:hover:from-dark-accent/30 dark:hover:to-dark-accent/20 transition-all duration-300 border border-light-accent/20 dark:border-dark-accent/30 hover:border-light-accent/40 dark:hover:border-dark-accent/50 hover:shadow-lg hover:-translate-y-0.5 flex-shrink-0 ${
                         clickedSkill === skill ? 'bg-emerald-500 text-white border-emerald-500 animate-bounce' : ''
                       }`}
                       style={{animationDelay: `${index * 0.05}s`}}

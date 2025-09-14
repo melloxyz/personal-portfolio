@@ -1,0 +1,176 @@
+{
+  "_comentarios": {
+    "_instrucoes": "Este arquivo centraliza TODAS as configurações do seu portfólio. Edite apenas os valores, mantendo a estrutura JSON.",
+    "_cores": "Use códigos hex (#6366f1) ou nomes CSS (blue). Gradientes são arrays de 3 cores.",
+    "_urls": "Sempre use URLs completas (https://...) para links externos.",
+    "_github": "Seu username do GitHub deve ser exato para funcionar a integração.",
+    "_validacao": "O sistema valida automaticamente campos obrigatórios e formatos de URL."
+  },
+
+  "informacoesPessoais": {
+    "_comentario": "📝 Suas informações básicas que aparecem em todo o portfólio",
+    "nome": "Mello",
+    "titulo": "Back-End Developer | Estudante", 
+    "biografiaCompleta": "Sou estudante de Análise e Desenvolvimento de Sistemas, em transição de carreira para a área de tecnologia, com foco em desenvolvimento Back-End. Tenho experiência prática com Node.js, JavaScript, Python e SQL, além de versionamento com Git/GitHub e metodologias ágeis como Scrum e Kanban. Antes da TI, atuei como líder de portaria, gerenciando equipes e processos, experiência que me trouxe disciplina, visão organizacional e foco em resultados. Hoje busco oportunidades como estagiário ou desenvolvedor júnior, onde possa aplicar meus conhecimentos técnicos, contribuir para soluções eficientes e continuar minha evolução profissional.",
+    "email": "joaovdmello@gmail.com"
+  },
+
+  "github": {
+    "_comentario": "🔗 Configurações da integração com GitHub - substitua pelo seu username",
+    "usuario": "melloxyz",
+    "projetosDestacados": ["nlw-unite", "upload-ai-api"],
+    "repositoriosIgnorados": ["config-files", "docs"],
+    "mostrarEstatisticas": true,
+    "mostrarProjetosRecentes": true,
+    "quantidadeProjetosRecentes": 3
+  },
+
+  "redesSociais": {
+    "_comentario": "🌐 Seus links de redes sociais - adicione, remova ou edite conforme necessário",
+    "github": "https://github.com/melloxyz",
+    "linkedin": "https://www.linkedin.com/in/mellodev-",
+    "rocketseat": "https://app.rocketseat.com.br/me/mxrvit",
+    "email": "joaovdmello@gmail.com",
+    "twitter": "",
+    "instagram": "https://www.instagram.com/mxrvit",
+    "website": ""
+  },
+
+  "habilidades": {
+    "_comentario": "💻 Suas skills técnicas - aparece na página Sobre e filtra projetos",
+    "linguagens": ["Node.js", "JavaScript", "TypeScript", "Python", "SQL"],
+    "frontend": ["React", "Next.js", "Tailwind CSS", "HTML", "CSS"],
+    "ferramentas": ["Git & GitHub", "REST APIs", "Scrum & Kanban", "VS Code"]
+  },
+
+  "formacaoAcademica": {
+    "_comentario": "🎓 Sua formação acadêmica - adicione quantas formações desejar",
+    "formacoes": [
+      {
+        "instituicao": "Centro Universitário Cesuca",
+        "curso": "Análise e Desenvolvimento de Sistemas", 
+        "periodo": "Jan 2024 - Dez 2026",
+        "logoUrl": "https://media.licdn.com/dms/image/v2/D4D0BAQE1obk6gpsu-w/company-logo_100_100/company-logo_100_100/0/1733236488321/cesucaoficial_logo?e=1760572800&v=beta&t=THZis1qCHbwlbDbEKzWOMBLlK_gKQCgD_4vKKLR1Q1E",
+        "status": "Em andamento",
+        "disciplinasPrincipais": [
+          "Algoritmos e Programação",
+          "Estrutura de Dados", 
+          "Metodologias Ágeis",
+          "Programação Orientada a Objetos",
+          "Banco de Dados (SQL)"
+        ],
+        "tecnologias": ["JavaScript", "Python", "SQLite", "Scrum", "Kanban"]
+      }
+    ]
+  },
+
+  "certificacoes": {
+    "_comentario": "🏆 Suas certificações - adicione quantas tiver, serão ordenadas por data",
+    "certificados": [
+      {
+        "titulo": "Fundamentos do Node.js",
+        "emissor": "Rocketseat",
+        "logoEmisor": "https://media.licdn.com/dms/image/v2/D4D0BAQE4-MEKqfOKsQ/company-logo_100_100/B4DZkG.gbwHsAQ-/0/1756758674439/rocketseat_logo?e=1760572800&v=beta&t=R7U2rH2OHqOMZ7uWRYgl-SFPzb5jlXbS9x_uq0sNFls",
+        "data": "Agosto de 2025",
+        "urlVerificacao": "https://app.rocketseat.com.br/certificates/d4718d59-2e75-48dd-baeb-db5af608e483"
+      },
+      {
+        "titulo": "Metodologias Ágeis", 
+        "emissor": "Rocketseat",
+        "logoEmisor": "https://media.licdn.com/dms/image/v2/D4D0BAQE4-MEKqfOKsQ/company-logo_100_100/B4DZkG.gbwHsAQ-/0/1756758674439/rocketseat_logo?e=1760572800&v=beta&t=R7U2rH2OHqOMZ7uWRYgl-SFPzb5jlXbS9x_uq0sNFls",
+        "data": "Setembro de 2025",
+        "urlVerificacao": "https://app.rocketseat.com.br/certificates/e301b019-2ab3-4fd3-b7d0-6d257f55931f"
+      },
+      {
+        "titulo": "O Básico de Git e GitHub",
+        "emissor": "Rocketseat", 
+        "logoEmisor": "https://media.licdn.com/dms/image/v2/D4D0BAQE4-MEKqfOKsQ/company-logo_100_100/B4DZkG.gbwHsAQ-/0/1756758674439/rocketseat_logo?e=1760572800&v=beta&t=R7U2rH2OHqOMZ7uWRYgl-SFPzb5jlXbS9x_uq0sNFls",
+        "data": "Maio de 2025",
+        "urlVerificacao": "https://app.rocketseat.com.br/certificates/33ca94cf-7e12-42a4-a83e-071353f2ed9e"
+      },
+      {
+        "titulo": "Comunicação Assertiva",
+        "emissor": "Rocketseat",
+        "logoEmisor": "https://media.licdn.com/dms/image/v2/D4D0BAQE4-MEKqfOKsQ/company-logo_100_100/B4DZkG.gbwHsAQ-/0/1756758674439/rocketseat_logo?e=1760572800&v=beta&t=R7U2rH2OHqOMZ7uWRYgl-SFPzb5jlXbS9x_uq0sNFls",
+        "data": "Setembro de 2025", 
+        "urlVerificacao": "https://app.rocketseat.com.br/certificates/ada959c5-9abb-41fd-9ac1-f4adb4b65d17"
+      },
+      {
+        "titulo": "Gestão de Tempo",
+        "emissor": "Rocketseat",
+        "logoEmisor": "https://media.licdn.com/dms/image/v2/D4D0BAQE4-MEKqfOKsQ/company-logo_100_100/B4DZkG.gbwHsAQ-/0/1756758674439/rocketseat_logo?e=1760572800&v=beta&t=R7U2rH2OHqOMZ7uWRYgl-SFPzb5jlXbS9x_uq0sNFls",
+        "data": "Setembro de 2025",
+        "urlVerificacao": "https://app.rocketseat.com.br/certificates/67d9f255-bdd5-4987-a597-ea703a528570"
+      },
+      {
+        "titulo": "Saúde Física e Emocional",
+        "emissor": "Universidade Corporativa Cruzeiro", 
+        "logoEmisor": "https://media.licdn.com/dms/image/v2/D4D0BAQHqMca0DT0GXw/company-logo_200_200/company-logo_200_200/0/1689804507133/educacaocorporativacruzeirodosul_logo?e=2147483647&v=beta&t=PXYBoZMbPHiMQLTjPQcqh3N6jUVA-NuDioQkB7qm6Eg",
+        "data": "Agosto de 2025",
+        "urlVerificacao": "https://www3.cruzeirodosulvirtual.com.br/badges/exibir/deff1b5b-517d-44df-a590-4b769423fd1e"
+      }
+    ]
+  },
+
+  "tema": {
+    "_comentario": "🎨 Configurações visuais do portfólio - cores principais em hexadecimal",
+    "coresPrimarias": {
+      "gradientePrincipal": ["#6366f1", "#8b5cf6", "#ec4899"],
+      "corPrimaria": "#8b5cf6", 
+      "corSecundaria": "#ec4899",
+      "corDeDestaque": "#06b6d4"
+    },
+    "animacoes": {
+      "habilitarOrbsAnimados": true,
+      "habilitarAnimacoesHover": true,
+      "velocidadeAnimacao": "normal",
+      "habilitarGradientes": true
+    },
+    "layout": {
+      "mostrarBackgroundOrbs": true,
+      "estiloBotoes": "premium",
+      "estiloCards": "glassmorphism"
+    }
+  },
+
+  "configuracoes": {
+    "_comentario": "⚙️ Configurações gerais do comportamento do site",
+    "seo": {
+      "tituloBase": "Mello - Portfólio",
+      "descricao": "Portfólio de Mello, Desenvolvedor Back-End especializado em Node.js, JavaScript e Python",
+      "palavrasChave": ["desenvolvedor", "backend", "nodejs", "javascript", "python", "portfolio"]
+    },
+    "analytics": {
+      "googleAnalytics": "",
+      "habilitarTracking": false
+    },
+    "performance": {
+      "lazyLoading": true,
+      "otimizarImagens": true,
+      "cacheGithub": true
+    }
+  },
+
+  "textos": {
+    "_comentario": "📝 Textos customizáveis que aparecem no site",
+    "home": {
+      "botaoPrincipal": "Ver Meus Projetos",
+      "textoConvite": "Sinta-se à vontade para conferir minhas outras redes e entrar em contato. Vamos conectar! 🤝"
+    },
+    "projects": {
+      "titulo": "Projetos",
+      "subtitulo": "Alguns dos meus trabalhos mais recentes e projetos pessoais",
+      "textoSemProjetos": "Nenhum projeto encontrado com os filtros aplicados.",
+      "botaoVerMais": "Ver no GitHub"
+    },
+    "about": {
+      "titulo": "Sobre Mim", 
+      "subtitulo": "Desenvolvedor apaixonado por tecnologia e inovação",
+      "textoSkills": "Clique em uma habilidade para filtrar projetos relacionados"
+    },
+    "certifications": {
+      "titulo": "Formação & Certificações",
+      "subtitulo": "Meu compromisso com o aprendizado contínuo e desenvolvimento profissional"
+    }
+  }
+}

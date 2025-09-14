@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Section from './Section';
-import { GITHUB_USERNAME, PERSONAL_INFO } from '../constants';
+import { GITHUB_USERNAME } from '../constants';
+import { CONFIG } from '../config-loader';
 import { useGithubContext } from '../App';
 import { SocialLink } from '../types';
 
@@ -9,7 +10,7 @@ const Home: React.FC = () => {
   const [typedText, setTypedText] = useState('');
   const [isTyping, setIsTyping] = useState(true);
   
-  const fullTitle = PERSONAL_INFO.title;
+  const fullTitle = CONFIG.informacoesPessoais.titulo;
   
   // Efeito de digitação
   useEffect(() => {
@@ -34,10 +35,13 @@ const Home: React.FC = () => {
   
   const socialLinks: SocialLink[] = [
     { name: 'GitHub', url: `https://github.com/${GITHUB_USERNAME}`, icon: Github },
-    { name: 'LinkedIn', url: 'https://www.linkedin.com/in/mellodev-', icon: Linkedin },
-    { name: 'Rocketseat', url: 'https://app.rocketseat.com.br/me/mxrvit', icon: Rocket },
-    { name: 'Email', url: `mailto:${PERSONAL_INFO.email}`, icon: Mail },
-  ];
+    { name: 'LinkedIn', url: CONFIG.redesSociais.linkedin, icon: Linkedin },
+    { name: 'Instagram', url: CONFIG.redesSociais.instagram, icon: Instagram },
+    { name: 'Twitter', url: CONFIG.redesSociais.twitter, icon: Twitter },
+    { name: 'Rocketseat', url: CONFIG.redesSociais.rocketseat, icon: Rocket },
+    { name: 'Website', url: CONFIG.redesSociais.website, icon: Globe },
+    { name: 'Email', url: `mailto:${CONFIG.informacoesPessoais.email}`, icon: Mail },
+  ].filter(link => link.url && link.url !== '' && !link.url.includes('undefined'));
 
   return (
     <Section id="home">
@@ -82,19 +86,23 @@ const Home: React.FC = () => {
         
         {/* Nome com efeito de entrada */}
         <h1 className="text-4xl md:text-5xl font-extrabold text-light-text dark:text-dark-text tracking-tight mb-2 animate-fade-in-up">
-          {user?.name || PERSONAL_INFO.name}
+          {user?.name || CONFIG.informacoesPessoais.nome}
         </h1>
         
-        {/* Título com efeito de digitação */}
-        <h2 className="text-xl md:text-2xl font-medium text-light-accent dark:text-dark-accent mb-6 h-8 flex items-center justify-center">
-          <span>{typedText}</span>
-          {isTyping && <span className="ml-1 animate-blink">|</span>}
-        </h2>
+        {/* Título com efeito de digitação - altura dinâmica */}
+        <div className="min-h-[3rem] md:min-h-[3.5rem] mb-6 flex items-center justify-center">
+          <h2 className="text-xl md:text-2xl font-medium text-light-accent dark:text-dark-accent text-center leading-tight">
+            <span>{typedText}</span>
+            {isTyping && <span className="ml-1 animate-blink">|</span>}
+          </h2>
+        </div>
         
-        {/* Bio com efeito de fade */}
-        <p className="max-w-2xl text-lg text-light-subtext dark:text-dark-subtext mb-8 animate-fade-in" style={{ animationDelay: '0.5s' }}>
-          {user?.bio || PERSONAL_INFO.bio}
-        </p>
+        {/* Bio com efeito de fade - texto responsivo e bem formatado */}
+        <div className="max-w-2xl mx-auto mb-8 animate-fade-in" style={{ animationDelay: '0.5s' }}>
+          <p className="text-lg text-light-subtext dark:text-dark-subtext text-center leading-relaxed">
+            {user?.bio || CONFIG.informacoesPessoais.biografiaCompleta}
+          </p>
+        </div>
         
         {/* CTA centralizado */}
         <div className="flex justify-center mb-12">
@@ -211,6 +219,28 @@ const Mail: React.FC<{ className?: string }> = ({ className }) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
         <rect width="20" height="16" x="2" y="4" rx="2"></rect>
         <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+    </svg>
+);
+
+const Instagram: React.FC<{ className?: string }> = ({ className }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+        <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+        <path d="m16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+        <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+    </svg>
+);
+
+const Twitter: React.FC<{ className?: string }> = ({ className }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+        <path d="M22 4.01c-1 .49-1.98.689-3 .99-1.121-1.265-2.783-1.335-4.38-.737S11.977 6.323 12 8v1c-3.245.083-6.135-1.395-8-4 0 0-4.182 7.433 4 11-1.872 1.247-3.739 2.088-6 2 3.308 1.803 6.913 2.423 10.034 1.517 3.58-1.04 6.522-3.723 7.651-7.742a13.84 13.84 0 0 0 .497 -3.753C20.18 7.773 21.692 5.25 22 4.01z"></path>
+    </svg>
+);
+
+const Globe: React.FC<{ className?: string }> = ({ className }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="m12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+        <path d="M2 12h20"></path>
     </svg>
 );
 

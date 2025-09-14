@@ -40,12 +40,12 @@ const CertificationCard: React.FC<CertificationCardProps> = ({ certification }) 
           
           {/* Conteúdo */}
           <div className="flex-grow min-w-0">
-            <h3 className="font-bold text-xl text-light-text dark:text-dark-text group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:to-pink-600 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
+            <h3 className="font-bold text-lg lg:text-xl text-light-text dark:text-dark-text group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:to-pink-600 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300 break-words line-clamp-2">
               {certification.title}
             </h3>
             
-            <div className="flex items-center gap-2 mt-2">
-              <div className="px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-sm font-medium rounded-full">
+            <div className="flex flex-wrap items-center gap-2 mt-2">
+              <div className="px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-sm font-medium rounded-full break-words">
                 {certification.issuer}
               </div>
             </div>

@@ -28,8 +28,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ repo, onCardClick, index }) =
         style={{ animationDelay: `${index * 80}ms` }}
       >
         <div className="flex flex-col h-full">
-          <div className="flex justify-between items-start mb-3">
-            <h3 className="text-xl font-bold text-light-text dark:text-dark-text pr-2 group-hover:text-light-accent dark:group-hover:text-dark-accent transition-colors duration-300">
+          <div className="flex justify-between items-start mb-3 gap-2">
+            <h3 className="text-lg lg:text-xl font-bold text-light-text dark:text-dark-text group-hover:text-light-accent dark:group-hover:text-dark-accent transition-colors duration-300 break-words line-clamp-2 min-w-0 flex-grow">
               {repo.name}
             </h3>
             <a
@@ -38,7 +38,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ repo, onCardClick, index }) =
                rel="noopener noreferrer"
                onClick={(e) => e.stopPropagation()}
                aria-label="Ver no GitHub"
-               className="p-1 -mr-2 -mt-2 text-light-subtext dark:text-dark-subtext group-hover:text-light-accent dark:group-hover:text-dark-accent transition-colors flex-shrink-0"
+               className="p-1 text-light-subtext dark:text-dark-subtext group-hover:text-light-accent dark:group-hover:text-dark-accent transition-colors flex-shrink-0"
              >
               <ExternalLink className="w-5 h-5" />
             </a>
