@@ -48,7 +48,7 @@ const About: React.FC<AboutProps> = ({ onSkillSelect }) => {
       suffix: '' 
     },
     { 
-      label: 'Tecnologias Dominadas', 
+      label: 'Tecnologias Conhecidas', 
       value: uniqueTechnologies.size, 
       suffix: '+' 
     },
