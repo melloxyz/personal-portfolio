@@ -96,30 +96,22 @@ const Home: React.FC = () => {
           {user?.bio || PERSONAL_INFO.bio}
         </p>
         
-        {/* CTAs melhorados */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
-          {/* Botão principal */}
+        {/* CTA centralizado */}
+        <div className="flex justify-center mb-12">
+          {/* Botão principal premium */}
           <button
             onClick={() => window.location.hash = 'projects'}
-            className="group relative px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 flex items-center gap-3"
+            className="group relative px-12 py-5 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-700 hover:via-purple-700 hover:to-pink-700 text-white font-bold rounded-3xl shadow-xl hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 flex items-center gap-4 text-lg"
           >
-            <Briefcase className="w-5 h-5" />
-            Ver Projetos
-            <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-          </button>
-          
-          {/* Botão secundário */}
-          <button
-            onClick={() => window.location.hash = 'about'}
-            className="group px-8 py-4 border-2 border-light-accent dark:border-dark-accent text-light-accent dark:text-dark-accent hover:bg-light-accent dark:hover:bg-dark-accent hover:text-white font-semibold rounded-2xl transition-all duration-300 flex items-center gap-3"
-          >
-            <MessageCircle className="w-5 h-5" />
-            Saber Mais
+            <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-3xl opacity-0 group-hover:opacity-100 blur transition-all duration-500"></div>
+            <Briefcase className="relative w-6 h-6" />
+            <span className="relative">Ver Meus Projetos</span>
+            <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-white/10 to-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </button>
         </div>
         
         {/* Links sociais melhorados */}
-        <div className="flex items-center justify-center space-x-4">
+        <div className="flex items-center justify-center space-x-4 mb-6">
           {socialLinks.map((link, index) => (
             <a 
               key={link.name} 
@@ -138,6 +130,11 @@ const Home: React.FC = () => {
             </a>
           ))}
         </div>
+
+        {/* Texto de convite */}
+        <p className="text-center text-light-subtext dark:text-dark-subtext text-sm font-light max-w-md mx-auto animate-fade-in" style={{ animationDelay: '1.2s' }}>
+          Sinta-se à vontade para conferir minhas outras redes e entrar em contato. Vamos conectar! 🤝
+        </p>
       </div>
 
       {/* Estilos CSS inline para animações personalizadas */}
