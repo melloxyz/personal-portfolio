@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR" style="scroll-behavior: smooth;">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- SEO - Otimização para motores de busca -->
+    <title>Mello - Back-End Developer | Estudante</title>
+    <meta name="description" content="Portfolio de Mello, um engenheiro de software apaixonado por criar experiências de usuário bonitas, intuitivas e performáticas, com foco em desenvolvimento Back-End." />
+    <meta name="keywords" content="Mello, Desenvolvedor Back-End, Portfolio, Node.js, JavaScript, TypeScript, Python, SQL, React, Next.js, Git, GitHub, REST APIs" />
+    <meta name="author" content="Mello" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://portfolio-melloxyz.vercel.app/" />
+
+    <!-- Open Graph / Meta tags do Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://portfolio-melloxyz.vercel.app/" />
+    <meta property="og:title" content="Mello - Back-End Developer | Estudante" />
+    <meta property="og:description" content="Portfolio de Mello, um engenheiro de software apaixonado por criar experiências de usuário bonitas, intuitivas e performáticas, com foco em desenvolvimento Back-End." />
+    <meta property="og:image" content="https://avatars.githubusercontent.com/u/100414777?v=4" />
+
+    <!-- Meta tags do Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://portfolio-melloxyz.vercel.app/" />
+    <meta property="twitter:title" content="Mello - Back-End Developer | Estudante" />
+    <meta property="twitter:description" content="Portfolio de Mello, um engenheiro de software apaixonado por criar experiências de usuário bonitas, intuitivas e performáticas, com foco em desenvolvimento Back-End." />
+    <meta property="twitter:image" content="https://avatars.githubusercontent.com/u/100414777?v=4" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+            colors: {
+              'light-bg': '#f7f7f7',
+              'light-card': '#ffffff',
+              'light-text': '#1d1d1f',
+              'light-subtext': '#6e6e73',
+              'light-border': '#e5e5e5',
+              'light-accent': '#0071e3',
+
+              'dark-bg': '#121212',
+              'dark-card': '#1e1e1e',
+              'dark-text': '#f5f5f7',
+              'dark-subtext': '#a1a1a6',
+              'dark-border': '#333333',
+              'dark-accent': '#0a84ff',
+            }
+          }
+        }
+      }
+    </script>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.1.1/",
+    "react": "https://aistudiocdn.com/react@^19.1.1",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.544.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/",
+    "axios": "https://aistudiocdn.com/axios@^1.12.1"
+  }
+}
+</script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  
+  <!-- JSON-LD para Rich Snippets -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Mello",
+    "url": "https://portfolio-melloxyz.vercel.app/",
+    "image": "https://avatars.githubusercontent.com/u/100414777?v=4",
+    "sameAs": [
+      "https://github.com/melloxyz",
+      "https://www.linkedin.com/in/mellodev-"
+    ],
+    "jobTitle": "Back-End Developer",
+    "alumniOf": {
+      "@type": "CollegeOrUniversity",
+      "name": "Centro Universitário Cesuca"
+    }
+  }
+  </script>
+</head>
+  <body class="bg-light-bg dark:bg-dark-bg transition-colors duration-300">
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
