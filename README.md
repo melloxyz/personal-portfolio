@@ -308,7 +308,7 @@ Contribuições são bem-vindas! Por favor:
 
 ## Autor
 
-**Seu Nome**
+João Mello
 
 - GitHub: [@melloxyz](https://github.com/melloxyz)
 - LinkedIn: [mellodev-](https://linkedin.com/in/mellodev-)
